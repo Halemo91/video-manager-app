@@ -4,12 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ButtonComponent } from './button/button.component';
-import { VideosTableComponent } from './videos-table/videos-table.component';
+import { VideosModule } from './videos/videos.module';
+import { CommonModule } from './common/common.module';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent, VideosTableComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, VideosModule, CommonModule],
   providers: [],
   bootstrap: [AppComponent],
 })
