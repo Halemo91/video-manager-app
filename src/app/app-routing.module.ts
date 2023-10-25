@@ -8,6 +8,11 @@ const routes: Routes = [
     path: "",
     loadChildren: () =>
       import("./videos/videos.module").then((m) => m.VideosModule),
+  },
+  {
+    path: "video-actions",
+    loadChildren: () =>
+      import("./video-actions/video-actions.module").then((m) => m.VideoActionsModule),
   }
 ];
 

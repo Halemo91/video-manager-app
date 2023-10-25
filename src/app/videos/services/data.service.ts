@@ -6,8 +6,9 @@ import {
   Author,
   Category,
   ProcessedVideo,
+  Video,
 } from "../../common/models/interfaces";
-import { forkJoin, map, Observable } from "rxjs";
+import { forkJoin, map, mergeMap, Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -55,6 +56,32 @@ export class DataService {
     );
   }
 
+  addVideoToAuthor(
+    authorId: number,
+    newVideo: Video
+  ): Observable<Author | null> {
+    return this.getAuthorById(authorId).pipe(
+      mergeMap((author) => {
+        if (author) {
+          author.videos.push(newVideo);
+          return this.updateAuthor(author);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
+
+  private updateAuthor(author: Author): Observable<Author> {
+    const apiUrl = `${API}/authors/${author.id}`;
+    return this.http.put<Author>(apiUrl, author);
+  }
+
+  private getAuthorById(id: number): Observable<Author> {
+    const apiUrl = `${API}/authors/${id}`;
+    return this.http.get<Author>(apiUrl);
+  }
+  
   private findHighestQualityFormat(formats?: {
     [key: string]: { res: string; size: number };
   }): string {
