@@ -35,6 +35,7 @@ export class DataService {
               author: author.name,
               name: video.name,
               categories: videoCategories,
+              releaseDate: video.releaseDate,
             };
 
             processedVideos.push(processedVideo);

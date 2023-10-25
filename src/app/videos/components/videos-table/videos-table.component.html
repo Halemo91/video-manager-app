@@ -5,6 +5,7 @@
         <th>Video Name</th>
         <th>Author</th>
         <th>Categories</th>
+        <th>Release Date</th>
         <th>Options</th>
       </tr>
     </thead>
@@ -14,9 +15,10 @@
         <td>{{ video.name }}</td>
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
-        <td>
-          <mi-button [text]="'Edit'"></mi-button>
-          <mi-button [text]="'Delete'"></mi-button>
+        <td>{{ video.releaseDate | date: "dd.MM.YYYY"}}</td>
+        <td >
+          <mi-button class="edit" [text]="'Edit'"></mi-button>
+          <mi-button class="delete" [text]="'Delete'"></mi-button>
         </td>
       </tr>
     </tbody>

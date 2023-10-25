@@ -13,3 +13,16 @@
   border: 1px solid;
   text-align: left;
 }
+
+mi-button.edit {
+  margin-right: 12px;
+ .button {
+    background: cadetblue;
+  }
+}
+
+mi-button.delete {
+ .button {
+    background: red;
+  }
+}
