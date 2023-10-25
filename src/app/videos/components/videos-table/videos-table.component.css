@@ -1,5 +1,8 @@
 .wrapper {
   overflow: auto;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  height: 60vh;
 }
 
 .table {

@@ -25,7 +25,7 @@ export class VideoFormComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getAuthors().subscribe((authors) => {
-      this.authors = authors; 
+      this.authors = authors;
     });
 
     this.dataService.getCategories().subscribe((categories) => {
@@ -41,11 +41,11 @@ export class VideoFormComponent implements OnInit {
       if (!selectedAuthor) {
         return;
       }
-      // const categories = formData.categories as number[]
+      const categories = formData.categories as number[];
       const newVideo: Video = {
         id: Math.floor(Math.random()) + 10,
         name: formData.videoName ? formData.videoName : "",
-        catIds: [2],
+        catIds: categories,
         formats: { one: { res: "1080p", size: 1000 } },
         releaseDate: Date().toString(),
       };
