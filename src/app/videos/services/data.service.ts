@@ -2,8 +2,12 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { API } from "../../common/models/constants";
-import { Author, Category, ProcessedVideo } from "../../common/models/interfaces";
-import { forkJoin, map, Observable} from "rxjs";
+import {
+  Author,
+  Category,
+  ProcessedVideo,
+} from "../../common/models/interfaces";
+import { forkJoin, map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -29,13 +33,17 @@ export class DataService {
             const videoCategories = categories
               .filter((category) => video.catIds.includes(category.id))
               .map((category) => category.name);
-
+            const highestQualityFormat = this.findHighestQualityFormat(
+              video.formats
+            );
+            console.log(author, videoCategories);
             const processedVideo: ProcessedVideo = {
               id: video.id,
               author: author.name,
               name: video.name,
               categories: videoCategories,
               releaseDate: video.releaseDate,
+              highestQualityFormat: highestQualityFormat,
             };
 
             processedVideos.push(processedVideo);
@@ -45,5 +53,43 @@ export class DataService {
         return processedVideos;
       })
     );
+  }
+
+  private findHighestQualityFormat(formats?: {
+    [key: string]: { res: string; size: number };
+  }): string {
+    if (!formats) {
+      return "";
+    }
+    const formatNames = Object.keys(formats);
+
+    if (formatNames.length === 0) {
+      return "No Formats Available";
+    }
+
+    let highestQualityFormat = formatNames[0];
+
+    for (let i = 1; i < formatNames.length; i++) {
+      const currentFormat = formatNames[i];
+      const currentFormatInfo = formats[currentFormat];
+      const highestQualityInfo = formats[highestQualityFormat];
+
+      if (
+        currentFormatInfo.size > highestQualityInfo.size ||
+        (currentFormatInfo.size === highestQualityInfo.size &&
+          this.compareResolutions(
+            currentFormatInfo.res,
+            highestQualityInfo.res
+          ) > 0)
+      ) {
+        highestQualityFormat = currentFormat;
+      }
+    }
+
+    return `${highestQualityFormat} ${formats[highestQualityFormat].res}`;
+  }
+
+  private compareResolutions(res1: string, res2: string): number {
+    return res1.localeCompare(res2);
   }
 }

@@ -5,6 +5,7 @@
         <th>Video Name</th>
         <th>Author</th>
         <th>Categories</th>
+        <th>Highest quality format</th>
         <th>Release Date</th>
         <th>Options</th>
       </tr>
@@ -15,6 +16,7 @@
         <td>{{ video.name }}</td>
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
+        <td>{{ video.highestQualityFormat}}</td>
         <td>{{ video.releaseDate | date: "dd.MM.YYYY"}}</td>
         <td >
           <mi-button class="edit" [text]="'Edit'"></mi-button>

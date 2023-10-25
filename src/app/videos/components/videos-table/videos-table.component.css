@@ -16,13 +16,13 @@
 
 mi-button.edit {
   margin-right: 12px;
- .button {
+  .button {
     background: cadetblue;
   }
 }
 
 mi-button.delete {
- .button {
+  .button {
     background: red;
   }
 }
