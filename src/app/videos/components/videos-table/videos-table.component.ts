@@ -1,3 +1,4 @@
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 
@@ -17,7 +18,8 @@ export class VideosTableComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private actionsService: ActionsService
+    private actionsService: ActionsService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {}
@@ -35,7 +37,16 @@ export class VideosTableComponent implements OnInit {
   private deleteVideo(video: ProcessedVideo) {
     this.actionsService
       .updateAuthorVideos(video.authorID, video, "remove")
-      .subscribe(() => {
+      .subscribe((response) => {
+        if (!response) {
+          this.snackBar.open("Video could not be deleted!", "Dismiss", {
+            duration: 3000,
+          });
+          return;
+        }
+        this.snackBar.open("Video deleted!", "Dismiss", {
+          duration: 3000,
+        });
         this.updateList.emit();
       });
   }

@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { CommonModule as AngularCommonModule } from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
 
 import { CommonModule } from "../common/common.module";
 import { VideoActionPage } from "./pages/video-action/video-action.page";
@@ -14,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     AngularCommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     VideoActionsRoutingModule,
     CommonModule,
   ],

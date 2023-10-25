@@ -2,6 +2,7 @@ import { DataService } from "./../../../videos/services/data.service";
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { VideoForm } from "../../models/video-form";
 import { ActionsService } from "../../services/actions.service";
@@ -21,7 +22,8 @@ export class VideoFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private actionsService: ActionsService,
-    private dataService: DataService
+    private dataService: DataService,
+    private snackBar: MatSnackBar
   ) {
     this.videoForm = this.createVideoFormForm();
   }
@@ -50,8 +52,18 @@ export class VideoFormComponent implements OnInit {
 
       this.actionsService
         .updateAuthorVideos(selectedAuthor.id, newVideo, "add")
-        .subscribe(() => {
+        .subscribe((response) => {
+          if (!response) {
+            this.snackBar.open("Video could not be added!", "Dismiss", {
+              duration: 3000,
+            });
+            return;
+          }
+
           this.router.navigate(["/"]);
+          this.snackBar.open("Video added successfully", "Dismiss", {
+            duration: 3000,
+          });
         });
     }
   }
