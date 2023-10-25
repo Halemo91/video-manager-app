@@ -1,9 +1,11 @@
-import { Author, Category, Video } from "./../../../common/models/interfaces";
 import { DataService } from "./../../../videos/services/data.service";
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 import { VideoForm } from "../../models/video-form";
+import { ActionsService } from "../../services/actions.service";
+import { Author, Category, Video } from "./../../../common/models/interfaces";
 
 @Component({
   selector: "app-video-form",
@@ -18,19 +20,15 @@ export class VideoFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private actionsService: ActionsService,
     private dataService: DataService
   ) {
     this.videoForm = this.createVideoFormForm();
   }
 
   ngOnInit() {
-    this.dataService.getAuthors().subscribe((authors) => {
-      this.authors = authors;
-    });
-
-    this.dataService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
+    this.loadAuthors();
+    this.loadCategories();
   }
 
   onSubmit() {
@@ -38,22 +36,21 @@ export class VideoFormComponent implements OnInit {
       const formData = this.videoForm.value;
 
       const selectedAuthor = formData.author;
-      if (!selectedAuthor) {
+      if (!selectedAuthor || !formData.videoName || !formData.categories) {
         return;
       }
       const categories = formData.categories as number[];
       const newVideo: Video = {
         id: Math.floor(Math.random()) + 10,
-        name: formData.videoName ? formData.videoName : "",
+        name: formData.videoName,
         catIds: categories,
         formats: { one: { res: "1080p", size: 1000 } },
         releaseDate: Date().toString(),
       };
 
-      this.dataService
-        .addVideoToAuthor(selectedAuthor.id, newVideo)
-        .subscribe((savedVideo) => {
-          console.log("Video saved:", savedVideo);
+      this.actionsService
+        .updateAuthorVideos(selectedAuthor.id, newVideo, "add")
+        .subscribe(() => {
           this.router.navigate(["/"]);
         });
     }
@@ -64,6 +61,18 @@ export class VideoFormComponent implements OnInit {
       videoName: ["", Validators.required],
       author: [null, Validators.required],
       categories: [[], Validators.required],
+    });
+  }
+
+  private loadAuthors() {
+    this.dataService.getAuthors().subscribe((authors) => {
+      this.authors = authors;
+    });
+  }
+
+  private loadCategories() {
+    this.dataService.getCategories().subscribe((categories) => {
+      this.categories = categories;
     });
   }
 }

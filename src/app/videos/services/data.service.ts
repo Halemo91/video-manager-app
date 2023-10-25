@@ -37,10 +37,10 @@ export class DataService {
             const highestQualityFormat = this.findHighestQualityFormat(
               video.formats
             );
-            console.log(author, videoCategories);
             const processedVideo: ProcessedVideo = {
               id: video.id,
               author: author.name,
+              authorID: author.id,
               name: video.name,
               categories: videoCategories,
               releaseDate: video.releaseDate,
@@ -56,32 +56,7 @@ export class DataService {
     );
   }
 
-  addVideoToAuthor(
-    authorId: number,
-    newVideo: Video
-  ): Observable<Author | null> {
-    return this.getAuthorById(authorId).pipe(
-      mergeMap((author) => {
-        if (author) {
-          author.videos.push(newVideo);
-          return this.updateAuthor(author);
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
 
-  private updateAuthor(author: Author): Observable<Author> {
-    const apiUrl = `${API}/authors/${author.id}`;
-    return this.http.put<Author>(apiUrl, author);
-  }
-
-  private getAuthorById(id: number): Observable<Author> {
-    const apiUrl = `${API}/authors/${id}`;
-    return this.http.get<Author>(apiUrl);
-  }
-  
   private findHighestQualityFormat(formats?: {
     [key: string]: { res: string; size: number };
   }): string {

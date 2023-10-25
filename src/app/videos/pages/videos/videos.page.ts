@@ -18,7 +18,6 @@ export class VideosPage implements OnInit {
   loadVideos() {
     this.dataService.getVideos().subscribe((videos) => {
       this.videos = videos;
-      console.log(this.videos);
     });
   }
 }

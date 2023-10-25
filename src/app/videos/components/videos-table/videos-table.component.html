@@ -22,7 +22,7 @@
         <td>{{ video.releaseDate | date: "dd.MM.YYYY"}}</td>
         <td >
           <mi-button class="edit" [text]="'Edit'"></mi-button>
-          <mi-button class="delete" [text]="'Delete'"></mi-button>
+          <mi-button (click)="onDeleteVideoClicked(video)" class="delete" [text]="'Delete'"></mi-button>
         </td>
       </tr>
     </tbody>
