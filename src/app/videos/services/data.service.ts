@@ -34,9 +34,10 @@ export class DataService {
             const videoCategories = categories
               .filter((category) => video.catIds.includes(category.id))
               .map((category) => category.name);
-            const highestQualityFormat = this.findHighestQualityFormat(
-              video.formats
-            );
+            const highestQualityFormat =
+              typeof video.formats == "string"
+                ? video.formats
+                : this.findHighestQualityFormat(video.formats);
             const processedVideo: ProcessedVideo = {
               id: video.id,
               author: author.name,

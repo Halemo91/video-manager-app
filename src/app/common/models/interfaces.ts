@@ -8,7 +8,7 @@ export interface Video {
   catIds: number[];
   name: string;
   releaseDate: string;
-  formats: VideoFormats;
+  formats: VideoFormats | string;
 }
 
 export interface Author {

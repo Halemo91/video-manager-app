@@ -18,11 +18,11 @@ export class VideoActionPage implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((queryParams: any) => {
-      if (!queryParams) {
+      if (!queryParams?.videoId) {
         return;
       }
-      const videoId = queryParams.videoId;
 
+      const videoId = queryParams.videoId;
       this.getVideoById(videoId);
     });
   }
