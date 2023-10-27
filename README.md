@@ -7,7 +7,7 @@ This is a simple web application built with Angular for viewing list of videos a
 - Listing videos.
 - Adding new video.
 - Delete video from video lists.
-- (TODO) Edit existing video.
+- Edit existing video.
 - (TODO) Add filter to video lists.
 
 ## Development
