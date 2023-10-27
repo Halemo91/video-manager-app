@@ -1,3 +1,4 @@
+import { Subscription } from "rxjs";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
@@ -11,6 +12,9 @@ import { DataService } from "./../../../videos/services/data.service";
 })
 export class VideoActionPage implements OnInit {
   video: ProcessedVideo | undefined;
+
+  private subscription!: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService
@@ -27,9 +31,17 @@ export class VideoActionPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   private getVideoById(videoId: number) {
-    this.dataService.getVideoById(videoId).subscribe((video) => {
-      this.video = video;
-    });
+    this.subscription = this.dataService
+      .getVideoById(videoId)
+      .subscribe((video) => {
+        this.video = video;
+      });
   }
 }

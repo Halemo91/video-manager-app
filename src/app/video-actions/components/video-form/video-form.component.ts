@@ -12,6 +12,7 @@ import {
   Video,
 } from "./../../../common/models/interfaces";
 import { DataService } from "./../../../videos/services/data.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-video-form",
@@ -22,6 +23,8 @@ export class VideoFormComponent implements OnInit {
   videoForm: FormGroup<VideoForm>;
   authors!: Author[];
   categories!: Category[];
+
+  private subscriptions: Subscription[] = [];
 
   @Input() video: ProcessedVideo | undefined;
 
@@ -45,6 +48,12 @@ export class VideoFormComponent implements OnInit {
 
   ngOnInit() {
     this.loadAuthors();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 
   onSubmit() {
@@ -151,15 +160,21 @@ export class VideoFormComponent implements OnInit {
   }
 
   private loadAuthors() {
-    this.dataService.getAuthors().subscribe((authors) => {
-      this.authors = authors;
-    });
+    const authorSubscription = this.dataService
+      .getAuthors()
+      .subscribe((authors) => {
+        this.authors = authors;
+      });
+    this.subscriptions.push(authorSubscription);
   }
 
   private loadCategories() {
-    this.dataService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
+    const categoriesSubscription = this.dataService
+      .getCategories()
+      .subscribe((categories) => {
+        this.categories = categories;
+      });
+    this.subscriptions.push(categoriesSubscription);
   }
 
   private showSnackBar(message: string) {
