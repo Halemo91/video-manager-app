@@ -56,6 +56,11 @@ export class DataService {
     );
   }
 
+  getVideoById(videoId: number): Observable<ProcessedVideo | undefined> {
+    return this.getVideos().pipe(
+      map((videos) => videos.find((video) => video.id == videoId))
+    );
+  }
 
   private findHighestQualityFormat(formats?: {
     [key: string]: { res: string; size: number };

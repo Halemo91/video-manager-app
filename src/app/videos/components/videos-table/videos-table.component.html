@@ -21,7 +21,7 @@
         <td>{{ video.highestQualityFormat}}</td>
         <td>{{ video.releaseDate | date: "dd.MM.YYYY"}}</td>
         <td >
-          <mi-button class="edit" [text]="'Edit'"></mi-button>
+          <mi-button (click)="onEditVideoClicked(video)"  class="edit" [text]="'Edit'"></mi-button>
           <mi-button (click)="onDeleteVideoClicked(video)" class="delete" [text]="'Delete'"></mi-button>
         </td>
       </tr>

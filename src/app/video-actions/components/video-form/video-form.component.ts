@@ -1,12 +1,17 @@
 import { DataService } from "./../../../videos/services/data.service";
 import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit, SimpleChanges } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { VideoForm } from "../../models/video-form";
 import { ActionsService } from "../../services/actions.service";
-import { Author, Category, Video } from "./../../../common/models/interfaces";
+import {
+  Author,
+  Category,
+  ProcessedVideo,
+  Video,
+} from "./../../../common/models/interfaces";
 
 @Component({
   selector: "app-video-form",
@@ -18,6 +23,8 @@ export class VideoFormComponent implements OnInit {
   authors!: Author[];
   categories!: Category[];
 
+  @Input() video: ProcessedVideo | undefined;
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -26,24 +33,31 @@ export class VideoFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.videoForm = this.createVideoFormForm();
+    this.loadCategories();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const video = changes["video"];
+    if (video && video.currentValue) {
+      this.updateVideoForm(video.currentValue);
+    }
   }
 
   ngOnInit() {
     this.loadAuthors();
-    this.loadCategories();
   }
 
   onSubmit() {
     if (this.videoForm.valid) {
       const formData = this.videoForm.value;
 
-      const selectedAuthor = formData.author;
-      if (!selectedAuthor || !formData.videoName || !formData.categories) {
+      const selectedAuthorID = formData.authorID;
+      if (!selectedAuthorID || !formData.videoName || !formData.categories) {
         return;
       }
       const categories = formData.categories as number[];
       const newVideo: Video = {
-        id: Math.floor(Math.random()) + 10,
+        id: new Date().getTime() + Math.floor(Math.random() * 1000),
         name: formData.videoName,
         catIds: categories,
         formats: { one: { res: "1080p", size: 1000 } },
@@ -51,7 +65,7 @@ export class VideoFormComponent implements OnInit {
       };
 
       this.actionsService
-        .updateAuthorVideos(selectedAuthor.id, newVideo, "add")
+        .updateAuthorVideos(selectedAuthorID, newVideo, "add")
         .subscribe((response) => {
           if (!response) {
             this.snackBar.open("Video could not be added!", "Dismiss", {
@@ -71,8 +85,23 @@ export class VideoFormComponent implements OnInit {
   private createVideoFormForm(): FormGroup {
     return this.formBuilder.group({
       videoName: ["", Validators.required],
-      author: [null, Validators.required],
+      authorID: [null, Validators.required],
       categories: [[], Validators.required],
+    });
+  }
+
+  private updateVideoForm(videoData: ProcessedVideo) {
+    const categoryNames: string[] = videoData.categories;
+
+    const categoryIds: number[] = categoryNames.map((categoryName) => {
+      const category = this.categories?.find((cat) => cat.name == categoryName);
+      return category ? category.id : -1;
+    });
+
+    this.videoForm.patchValue({
+      videoName: videoData.name,
+      authorID: videoData.authorID,
+      categories: categoryIds,
     });
   }
 

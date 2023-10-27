@@ -1,4 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+
+import { ProcessedVideo } from "./../../../common/models/interfaces";
+import { DataService } from "./../../../videos/services/data.service";
 
 @Component({
   selector: "app-video-action",
@@ -6,7 +10,26 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./video-action.page.css"],
 })
 export class VideoActionPage implements OnInit {
-  constructor() {}
+  video: ProcessedVideo | undefined;
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: DataService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe((queryParams: any) => {
+      if (!queryParams) {
+        return;
+      }
+      const videoId = queryParams.videoId;
+
+      this.getVideoById(videoId);
+    });
+  }
+
+  private getVideoById(videoId: number) {
+    this.dataService.getVideoById(videoId).subscribe((video) => {
+      this.video = video;
+    });
+  }
 }

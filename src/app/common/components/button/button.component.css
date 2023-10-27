@@ -10,3 +10,8 @@
 .primary {
   background: var(--green);
 }
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

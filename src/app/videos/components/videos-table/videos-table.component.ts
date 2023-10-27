@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -19,7 +20,8 @@ export class VideosTableComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private actionsService: ActionsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -32,6 +34,10 @@ export class VideosTableComponent implements OnInit {
         this.deleteVideo(video);
       }
     });
+  }
+
+  onEditVideoClicked(video: ProcessedVideo) {
+    this.router.navigate(['/video-actions'], { queryParams: { videoId: video.id } });
   }
 
   private deleteVideo(video: ProcessedVideo) {

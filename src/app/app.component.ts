@@ -13,9 +13,9 @@ export class AppComponent {
     this.checkRoute();
   }
 
-  onAddVideoClicked() {
+  onHeaderButtonClicked() {
     this.router.navigate([
-      this.currentRoute === "/video-actions" ? "/" : "/video-actions",
+      this.currentRoute.includes("/video-actions") ? "/" : "/video-actions",
     ]);
   }
 
@@ -23,7 +23,7 @@ export class AppComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
-        if (this.currentRoute === "/video-actions") {
+        if (this.currentRoute.includes("/video-actions")) {
           this.primaryButtonName = "Back Home";
         } else {
           this.primaryButtonName = "Add Video";
