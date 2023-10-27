@@ -9,4 +9,6 @@ export class ButtonComponent {
   @Input() primary?: boolean = false;
   @Input() text: string = 'Button';
   @Input() disabled?: boolean = false;
+  @Input() isDelete?: boolean = false;
+  @Input() secondary?: boolean = false;
 }

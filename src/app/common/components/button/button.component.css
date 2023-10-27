@@ -11,6 +11,14 @@
   background: var(--green);
 }
 
+.secondary {
+  background: var(--cadetblue);
+}
+
+.delete {
+  background: var(--red);
+}
+
 .button:disabled {
   background-color: #ccc;
   cursor: not-allowed;

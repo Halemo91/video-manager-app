@@ -1,31 +1,32 @@
 .wrapper {
-  overflow: auto;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  height: 60vh;
+  margin: 20px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 16px;
+  border: 1px solid #ddd;
 }
 
-.table th,
-.table td {
-  padding: 16px;
-  border: 1px solid;
+th,
+td {
   text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
 }
 
-mi-button.edit {
-  margin-right: 12px;
-  .button {
-    background: cadetblue;
-  }
+thead {
+  background-color: #f2f2f2;
 }
 
-mi-button.delete {
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+mi-button {
+  margin: 10px;
   .button {
-    background: red;
+    margin-bottom: 4px;
   }
 }

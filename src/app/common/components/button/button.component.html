@@ -1,1 +1,11 @@
-<button class="button" [disabled]="disabled" [class.primary]="primary">{{ text }}</button>
+<button
+  class="button"
+  [disabled]="disabled"
+  [ngClass]="{
+    'primary': primary,
+    'secondary': secondary,
+    'delete': isDelete
+  }"
+>
+  {{ text }}
+</button>

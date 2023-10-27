@@ -1,4 +1,4 @@
-<h2>Video lists</h2>
+<h2>Video Lists</h2>
 
 <div class="wrapper">
   <table class="table">
@@ -7,7 +7,7 @@
         <th>Video Name</th>
         <th>Author</th>
         <th>Categories</th>
-        <th>Highest quality format</th>
+        <th>Highest Quality Format</th>
         <th>Release Date</th>
         <th>Options</th>
       </tr>
@@ -18,11 +18,11 @@
         <td>{{ video.name }}</td>
         <td>{{ video.author }}</td>
         <td>{{ video.categories.join(", ") }}</td>
-        <td>{{ video.highestQualityFormat}}</td>
-        <td>{{ video.releaseDate | date: "dd.MM.YYYY"}}</td>
-        <td >
-          <mi-button (click)="onEditVideoClicked(video)"  class="edit" [text]="'Edit'"></mi-button>
-          <mi-button (click)="onDeleteVideoClicked(video)" class="delete" [text]="'Delete'"></mi-button>
+        <td>{{ video.highestQualityFormat }}</td>
+        <td>{{ video.releaseDate | date: "dd.MM.YYYY" }}</td>
+        <td>
+          <mi-button (click)="onEditVideoClicked(video)" [secondary]="true" [text]="'Edit'"></mi-button>
+          <mi-button (click)="onDeleteVideoClicked(video)" [isDelete]="true" [text]="'Delete'"></mi-button>
         </td>
       </tr>
     </tbody>

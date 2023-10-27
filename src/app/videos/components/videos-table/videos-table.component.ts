@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -37,7 +37,9 @@ export class VideosTableComponent implements OnInit {
   }
 
   onEditVideoClicked(video: ProcessedVideo) {
-    this.router.navigate(['/video-actions'], { queryParams: { videoId: video.id } });
+    this.router.navigate(["/video-actions"], {
+      queryParams: { videoId: video.id },
+    });
   }
 
   private deleteVideo(video: ProcessedVideo) {
@@ -45,15 +47,18 @@ export class VideosTableComponent implements OnInit {
       .updateAuthorVideos(video.authorID, video, "remove")
       .subscribe((response) => {
         if (!response) {
-          this.snackBar.open("Video could not be deleted!", "Dismiss", {
-            duration: 3000,
-          });
+          this.showSnackBar("Video could not be deleted!");
           return;
         }
-        this.snackBar.open("Video deleted!", "Dismiss", {
-          duration: 3000,
-        });
+
+        this.showSnackBar("Video deleted!");
         this.updateList.emit();
       });
+  }
+
+  private showSnackBar(message: string) {
+    this.snackBar.open(message, "Dismiss", {
+      duration: 3000,
+    });
   }
 }
